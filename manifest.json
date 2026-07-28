@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "dizziee.power-profiles",
+  "name": "Power Profiles",
+  "version": "1.0.0",
+  "author": "Dizziee",
+  "license": "MIT",
+  "description": "Power profile switcher for desktop systems.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Power Profiles",
+    "description": "Switch between power-saver, balanced, and performance profiles.",
+    "category": "System",
+    "allowMultiple": false
+  }
+}
