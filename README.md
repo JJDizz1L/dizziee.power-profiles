@@ -35,6 +35,12 @@ No configurable options.
 
 ![preview](preview.png)
 
+## Uninstall
+
+```sh
+omarchy plugin remove dizziee.power-profiles
+```
+
 ## License
 
 MIT
