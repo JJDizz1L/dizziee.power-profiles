@@ -9,10 +9,16 @@ Power profile switcher for the Omarchy bar. Switch between power-saver, balanced
 ## Installation
 
 ```sh
-git clone https://github.com/JJDizz1L/dizziee.power-profiles.git ~/.config/omarchy/plugins/dizziee.power-profiles
+omarchy plugin add https://github.com/JJDizz1L/dizziee.power-profiles.git --enable
 ```
 
-Then enable **Power Profiles** in the Omarchy bar widget settings.
+Then place it in your bar layout with `omarchy bar plugin add dizziee.power-profiles [--section <left|center|right>]`.
+
+You can validate the plugin at any time with:
+
+```sh
+omarchy plugin validate ~/.config/omarchy/plugins/dizziee.power-profiles
+```
 
 ## Configuration
 
