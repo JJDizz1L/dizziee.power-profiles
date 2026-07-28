@@ -26,6 +26,10 @@ Configuration lives in `~/.config/omarchy/shell.json`.
 
 No configurable options.
 
+## Preview
+
+![preview](preview.png)
+
 ## License
 
 MIT
