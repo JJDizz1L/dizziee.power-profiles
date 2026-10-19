@@ -207,7 +207,7 @@ Panel {
               : 0
 
             Repeater {
-              model: root.profiles
+              model: root.opened ? root.profiles : []
               Button {
                 required property var modelData
                 required property int index
