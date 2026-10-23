@@ -189,6 +189,7 @@ Panel {
           spacing: Style.space(10)
 
           Text {
+            textFormat: Text.PlainText
             width: parent.width
             text: "Power Profiles"
             color: root.bar.foreground
