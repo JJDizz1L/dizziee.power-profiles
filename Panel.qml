@@ -34,9 +34,16 @@ Panel {
   function applyCache(text) {
     try {
       var data = JSON.parse(String(text || "{}"))
-      if (!data || !Array.isArray(data.profiles) || data.profiles.length === 0) return
-      profiles = data.profiles
-      if (typeof data.activeProfile === "string") activeProfile = data.activeProfile
+      if (!data || !Array.isArray(data.profiles)) return
+      var cached = []
+      for (var i = 0; i < data.profiles.length && cached.length < Model.MAX_PROFILES; i++) {
+        var name = Model.cleanProfileName(data.profiles[i])
+        if (name && cached.indexOf(name) === -1) cached.push(name)
+      }
+      if (cached.length === 0) return
+      var active = Model.cleanProfileName(data.activeProfile)
+      profiles = cached
+      activeProfile = active !== "" && cached.indexOf(active) >= 0 ? active : ""
       var idx = profiles.indexOf(activeProfile)
       profileIndex = idx >= 0 ? idx : 0
     } catch (e) {}

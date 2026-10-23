@@ -1,3 +1,16 @@
+// The cache is user-writable and command output is external input. Keep the
+// list tiny and every profile name a plain string before it reaches a button
+// or the powerprofilesctl argv.
+var MAX_PROFILES = 16
+var MAX_PROFILE_NAME = 64
+
+function cleanProfileName(value) {
+  if (typeof value !== "string") return ""
+  var name = value.trim()
+  if (!name || name.length > MAX_PROFILE_NAME) return ""
+  return name
+}
+
 function clampIndex(index, length) {
   if (length <= 0) return 0
   return Math.max(0, Math.min(length - 1, index))
@@ -13,12 +26,14 @@ function parseProfiles(raw, previousIndex) {
   var lines = String(raw || "").split("\n")
   var list = []
   var active = ""
-  for (var i = 0; i < lines.length; i++) {
+  for (var i = 0; i < lines.length && list.length < MAX_PROFILES; i++) {
     var line = lines[i].trim()
     if (!line) continue
     var parts = line.split("\t")
-    list.push(parts[0])
-    if (parts[1] === "1") active = parts[0]
+    var name = cleanProfileName(parts[0])
+    if (!name || list.indexOf(name) !== -1) continue
+    list.push(name)
+    if (parts[1] === "1") active = name
   }
   return {
     profiles: list,
@@ -36,9 +51,11 @@ function profileIcon(name) {
 
 if (typeof module !== "undefined") {
   module.exports = {
+    cleanProfileName: cleanProfileName,
     clampIndex: clampIndex,
     selectProfileIndex: selectProfileIndex,
     parseProfiles: parseProfiles,
-    profileIcon: profileIcon
+    profileIcon: profileIcon,
+    MAX_PROFILES: MAX_PROFILES
   }
 }
