@@ -1,0 +1,8 @@
+{
+  "power.title": "Power Profiles",
+  "power.tooltipActive": "Power: %1",
+  "power.tooltipIdle": "Power Profiles",
+  "power.saver": "Power saver",
+  "power.balanced": "Balanced",
+  "power.performance": "Performance"
+}

@@ -49,3 +49,17 @@ test("profileIcon covers the three standard profiles", () => {
   assert.notEqual(Model.profileIcon("balanced"), Model.profileIcon("performance"))
   assert.equal(Model.profileIcon("unknown"), Model.profileIcon("unknown"))
 })
+
+test("cleanProfileName rejects flag injection and markup stays inert", () => {
+  assert.equal(Model.cleanProfileName("--help"), "")
+  assert.equal(Model.cleanProfileName("-saver"), "")
+  const evil = '<img src="https://example.invalid/tracker">'
+  assert.equal(Model.cleanProfileName(evil), evil)
+  assert.equal(Model.cleanProfileName("x".repeat(65)), "")
+})
+
+test("parseProfiles drops dash-led names", () => {
+  const parsed = Model.parseProfiles("--help\t0\nbalanced\t1\n", 0)
+  assert.deepEqual(parsed.profiles, ["balanced"])
+  assert.equal(parsed.activeProfile, "balanced")
+})

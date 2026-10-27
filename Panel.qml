@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "Model.js" as Model
 
@@ -71,6 +72,18 @@ Panel {
 
   readonly property string barIcon: "󰠠"
 
+  Commons.Translations {
+    id: strings
+    directory: Qt.resolvedUrl("i18n")
+  }
+
+  function profileLabel(name) {
+    if (name === "power-saver") return strings.t("power.saver")
+    if (name === "balanced") return strings.t("power.balanced")
+    if (name === "performance") return strings.t("power.performance")
+    return Model.cleanProfileName(name)
+  }
+
   function refresh() {
     if (!profilesProc.running) profilesProc.running = true
   }
@@ -92,9 +105,11 @@ Panel {
   }
 
   function setProfile(profile) {
-    if (!profile || actionProc.running) return
+    var clean = Model.cleanProfileName(profile)
+    if (!clean || clean.charAt(0) === "-" || actionProc.running) return
+    if (profiles.indexOf(clean) === -1) return
     pokeIdle()
-    actionProc.command = ["powerprofilesctl", "set", profile]
+    actionProc.command = ["powerprofilesctl", "set", clean]
     actionProc.running = true
   }
 
@@ -158,7 +173,7 @@ Panel {
     text: root.barIcon
     fixedWidth: root.bar && root.bar.vertical ? -1 : Style.space(27)
     fixedHeight: root.bar && root.bar.vertical ? Style.space(26) : -1
-    tooltipText: root.activeProfile ? "Power: " + root.activeProfile : "Power Profiles"
+    tooltipText: root.activeProfile ? strings.t("power.tooltipActive").arg(root.activeProfile) : strings.t("power.tooltipIdle")
     onPressed: function(b) { root.toggle() }
   }
 
@@ -198,7 +213,7 @@ Panel {
           Text {
             textFormat: Text.PlainText
             width: parent.width
-            text: "Power Profiles"
+            text: strings.t("power.title")
             color: root.bar.foreground
             font.family: root.bar.fontFamily
             font.pixelSize: Style.font.title
@@ -222,7 +237,7 @@ Panel {
                 width: profileRow.cellWidth
                 iconText: root.profileIcon(String(modelData))
                 iconSize: Style.font.title
-                text: String(modelData).charAt(0).toUpperCase() + String(modelData).slice(1)
+                text: root.profileLabel(String(modelData))
                 fontSize: Style.font.bodySmall
                 foreground: root.bar.foreground
                 fontFamily: root.bar.fontFamily

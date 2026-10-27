@@ -8,6 +8,7 @@ function cleanProfileName(value) {
   if (typeof value !== "string") return ""
   var name = value.trim()
   if (!name || name.length > MAX_PROFILE_NAME) return ""
+  if (name.charAt(0) === "-") return ""
   return name
 }
 
@@ -56,6 +57,7 @@ if (typeof module !== "undefined") {
     selectProfileIndex: selectProfileIndex,
     parseProfiles: parseProfiles,
     profileIcon: profileIcon,
-    MAX_PROFILES: MAX_PROFILES
+    MAX_PROFILES: MAX_PROFILES,
+    MAX_PROFILE_NAME: MAX_PROFILE_NAME
   }
 }
